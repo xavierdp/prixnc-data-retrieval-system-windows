@@ -8,7 +8,7 @@ import csv
 import argparse
 from datetime import datetime
 import os
-from db_setup import create_database
+from db_setup import setup_database
 from api_annexes import APIAnnexes
 from search import ProduitSearch
 import logging
@@ -40,7 +40,7 @@ class PrixNCManager:
         # Initialisation de la base de données si elle n'existe pas
         if not os.path.exists(db_path):
             logger.info(f"Création de la base de données: {db_path}")
-            create_database(db_path)
+            setup_database(db_path)
         else:
             logger.info(f"Utilisation de la base de données existante: {db_path}")
         
@@ -124,7 +124,7 @@ class PrixNCManager:
         while True:
             try:
                 # Récupération d'une page de produits
-                url = f"{self.base_url}/produitsprix?page={current_page}&size={page_size}"
+                url = f"{self.base_url}/produitsprix?page = {current_page}&size = {page_size}"
                 logger.info(f"Récupération de la page {current_page}...")
                 
                 response = self._make_request(url)
@@ -201,7 +201,7 @@ class PrixNCManager:
         """
         try:
             # Utiliser l'endpoint des relevés de prix pour un produit spécifique
-            url = f"{self.base_url}/relevesprix/search/findByIdProduitOrderByPrixParUniteAscPrixAscMagasinAsc?idProduit={product_id}"
+            url = f"{self.base_url}/relevesprix/search/findByIdProduitOrderByPrixParUniteAscPrixAscMagasinAsc?idProduit = {product_id}"
             logger.info(f"Récupération des prix pour le produit {product_id}...")
             
             response = self._make_request(url)
@@ -330,7 +330,7 @@ class PrixNCManager:
     def fetch_annexes(self):
         """
         Récupère toutes les données annexes (secteurs, sous-secteurs, marques, etc.)
-        """
+    """
         return self.api_annexes.fetch_all_annexes()
 
     def fetch_secteurs(self):
@@ -479,26 +479,26 @@ class PrixNCManager:
     def search_products(self, **kwargs):
         """
         Recherche des produits selon différents critères
-        """
+    """
         return self.search_engine.search_products(**kwargs)
     
     def export_search_results(self, results, output_file="search_results.csv"):
         """
         Exporte les résultats de recherche vers un fichier CSV
-        """
+    """
         return self.search_engine.export_search_results_to_csv(results, output_file)
     
     def get_distinct_values(self, field, table="produits"):
         """
         Récupère toutes les valeurs distinctes pour un champ donné
-        """
+    """
         return self.search_engine.get_distinct_values(field, table)
         
     def export_to_csv(self, output_file="produits_prix_nc.csv", **search_criteria):
         """
         Exporte les données de la base vers un fichier CSV
         Peut filtrer les données selon les critères de recherche passés en paramètres
-        """
+    """
         # Si des critères de recherche sont fournis, on utilise le moteur de recherche
         if search_criteria:
             results = self.search_products(**search_criteria)
@@ -598,7 +598,7 @@ class PrixNCManager:
     def export_last_update_to_csv(self, output_file="derniere_maj_prix.csv"):
         """
         Exporte les informations de dernière mise à jour des prix vers un fichier CSV
-        """
+    """
         results = self.get_last_price_update()
         
         # Écriture dans le fichier CSV
@@ -623,7 +623,7 @@ class PrixNCManager:
         """
         Récupère la dernière date de mise à jour des prix pour un produit spécifique
         ou pour tous les produits si aucun ID n'est spécifié
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -673,7 +673,7 @@ class PrixNCManager:
     def get_product_count(self):
         """
         Retourne le nombre de produits dans la base de données
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM produits")
@@ -684,7 +684,7 @@ class PrixNCManager:
     def get_price_count(self):
         """
         Retourne le nombre d'entrées de prix dans la base de données
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM prix")
@@ -695,7 +695,7 @@ class PrixNCManager:
     def get_commune_count(self):
         """
         Retourne le nombre de communes dans la base de données
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM communes")
@@ -706,7 +706,7 @@ class PrixNCManager:
     def get_magasin_count(self):
         """
         Retourne le nombre de magasins dans la base de données
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM magasins")
@@ -717,7 +717,7 @@ class PrixNCManager:
     def print_database_stats(self):
         """
         Affiche des statistiques sur la base de données
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -770,7 +770,7 @@ class PrixNCManager:
     def get_all_data(self, table_name):
         """
         Récupère toutes les données d'une table donnée
-        """
+    """
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -812,7 +812,7 @@ class PrixNCManager:
     def print_data(self, table_name):
         """
         Affiche les données d'une table donnée
-        """
+    """
         data = self.get_all_data(table_name)
         
         if not data:
@@ -1128,7 +1128,6 @@ def main():
                     logger.info(f"... et {len(prices) - 50} autres entrées")
             else:
                 logger.info(f"Aucun prix trouvé pour le produit {args.product_id}")
-{{ ... }}
 
 if __name__ == "__main__":
     main()

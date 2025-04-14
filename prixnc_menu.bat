@@ -48,7 +48,13 @@ echo Appuyez sur CTRL+C a tout moment pour arreter.
 echo.
 pause
 cls
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py
+python recuperer_produits.py
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recuperation des produits a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+)
 pause
 goto MENU
 
@@ -58,7 +64,13 @@ echo ================================================
 echo      RECUPERATION DE 100 PRODUITS (TEST)
 echo ================================================
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py --limit 100 --page-size 10
+python recuperer_produits.py --limit 100 --page-size 10
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recuperation des produits a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+)
 pause
 goto MENU
 
@@ -84,7 +96,13 @@ pause
 cls
 echo Recuperation des tables annexes en cours...
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --all-except-products
+python prix_nc_manager.py --all-except-products
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recuperation des tables annexes a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+)
 pause
 goto MENU
 
@@ -108,14 +126,30 @@ cls
 
 echo ETAPE 1: Recuperation des tables annexes en cours...
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --all-except-products
+python prix_nc_manager.py --all-except-products
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recuperation des tables annexes a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+    pause
+    goto MENU
+)
 echo.
 echo Tables annexes recuperees avec succes.
 echo.
 
 echo ETAPE 2: Recuperation des produits et prix en cours...
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py
+python recuperer_produits.py
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recuperation des produits a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+    pause
+    goto MENU
+)
 echo.
 echo Produits et prix recuperes avec succes.
 echo.
@@ -131,7 +165,7 @@ echo ================================================
 echo.
 echo Appuyez sur CTRL+C pour revenir au menu.
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe simple_stats_viewer.py
+python simple_stats_viewer.py
 goto MENU
 
 :RECHERCHE
@@ -144,7 +178,13 @@ set /p terme="Terme a rechercher: "
 cls
 echo Recherche en cours pour: %terme%
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --search "%terme%"
+python prix_nc_manager.py --search "%terme%"
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: La recherche a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+)
 pause
 goto MENU
 
@@ -159,7 +199,13 @@ set /p fichier="Nom du fichier CSV (sans extension): "
 cls
 echo Export en cours...
 echo.
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --search "%terme%" --export "%fichier%.csv"
+python prix_nc_manager.py --search "%terme%" --export-search --search-output "%fichier%.csv"
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo ERREUR: L'export a echoue.
+    echo Verifiez que Python est correctement installe et que les dependances sont satisfaites.
+    echo.
+)
 echo.
 echo Les resultats ont ete exportes dans le fichier: %fichier%.csv
 pause
@@ -172,16 +218,16 @@ echo      VERIFICATION DE LA CONFIGURATION
 echo ================================================
 echo.
 echo Version de Python:
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe --version
+python --version
 echo.
 echo Version de pip:
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe -m pip --version
+python -m pip --version
 echo.
 echo Verification de SQLite:
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe -c "import sqlite3; print(f'SQLite version: {sqlite3.sqlite_version}')"
+python -c "import sqlite3; print(f'SQLite version: {sqlite3.sqlite_version}')"
 echo.
 echo Verification des dependances:
-C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe -c "import requests; print(f'Requests version: {requests.__version__}')"
+python -c "import requests; print(f'Requests version: {requests.__version__}')"
 echo.
 echo Chemin de la base de donnees:
 dir prix_nc.db

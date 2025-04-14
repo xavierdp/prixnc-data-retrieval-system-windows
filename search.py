@@ -109,7 +109,17 @@ class ProduitSearch:
             results = cursor.fetchall()
             
             # Conversion en dictionnaires
-            results_list = [dict(row) for row in results]
+            results_list = []
+            for row in results:
+                row_dict = dict(row)
+                # Conversion des chaînes concaténées en listes pour éviter l'erreur "unhashable type: 'set'"
+                if "communes" in row_dict and row_dict["communes"]:
+                    # Utiliser une liste au lieu d'un set pour garantir qu'elle est hashable
+                    row_dict["communes"] = row_dict["communes"].split(',')
+                if "magasins" in row_dict and row_dict["magasins"]:
+                    # Utiliser une liste au lieu d'un set pour garantir qu'elle est hashable
+                    row_dict["magasins"] = row_dict["magasins"].split(',')
+                results_list.append(row_dict)
             
             conn.close()
             
@@ -127,18 +137,26 @@ class ProduitSearch:
             print("Aucun résultat à exporter")
             return 0
         
-        with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
-            # Utilisation des clés du premier résultat comme en-têtes de colonnes
-            fieldnames = results[0].keys()
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        try:
+            with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
+                # Utilisation des clés du premier résultat comme en-têtes de colonnes
+                fieldnames = list(results[0].keys())
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                
+                writer.writeheader()
+                for row in results:
+                    # Conversion des listes en chaînes pour le CSV
+                    row_copy = dict(row)
+                    for key, value in row_copy.items():
+                        if isinstance(value, list):
+                            row_copy[key] = ','.join(map(str, value))
+                    writer.writerow(row_copy)
             
-            writer.writeheader()
-            for row in results:
-                writer.writerow(row)
-        
-        return len(results)
-    
-    def get_distinct_values(self, field, table="produits"):
+            return len(results)
+        except Exception as e:
+            print(f"Erreur lors de l'export CSV: {str(e)}")
+            return 0
+def get_distinct_values(self, field, table="produits"):
         """
         Récupère toutes les valeurs distinctes pour un champ donné
         """
