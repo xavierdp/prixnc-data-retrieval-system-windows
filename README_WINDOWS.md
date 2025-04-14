@@ -12,71 +12,47 @@ Ce guide explique comment installer et utiliser Prix.nc Data Retrieval System su
 
 ## Installation étape par étape
 
-### 1. Installer Python
+### Méthode simple : Installateur complet
 
-Si Python n'est pas déjà installé :
+L'installateur complet peut gérer tous les aspects de l'installation en une seule étape ou vous guider à travers chaque étape individuellement.
 
+1. Double-cliquez sur `installer_complet.bat`
+2. Sélectionnez "7. Installer tout automatiquement" pour une installation complète en une étape
+3. Ou naviguez dans le menu pour installer les composants individuellement
+
+L'installateur s'occupera de :
+- Installer Python via winget (si nécessaire)
+- Ajouter Python au PATH système
+- Installer les dépendances Python
+- Initialiser la base de données
+- Vous proposer de lancer le menu interactif
+
+### Installation manuelle de Python (si l'installateur échoue)
+
+#### Option 1 : Installation via winget
+```
+winget install -e --id Python.Python.3.10 --accept-package-agreements --accept-source-agreements
+```
+
+#### Option 2 : Installation manuelle
 1. Téléchargez Python (version 3.10 ou supérieure) depuis [python.org](https://www.python.org/downloads/windows/)
 2. Lancez l'installateur
 3. **Important :** Cochez la case "Add Python to PATH"
 4. Cliquez sur "Install Now" pour une installation standard
 
-Pour vérifier l'installation, ouvrez une invite de commande (cmd) et tapez :
-```
-python --version
-```
-
-### 2. Installer Git (si pas déjà fait)
-
-Si Git n'est pas déjà installé :
-
-1. Téléchargez Git depuis [git-scm.com](https://git-scm.com/download/win)
-2. Lancez l'installateur et suivez les instructions par défaut
-
-### 3. Cloner le dépôt
-
-Ouvrez une invite de commande (cmd) ou PowerShell et exécutez :
-
-```
-git clone https://github.com/xavierdp/prixnc-data-retrieval-system.git
-cd prixnc-data-retrieval-system
-```
-
-Ou si vous avez déjà cloné avec SSH :
-```
-git clone git@github.com:xavierdp/prixnc-data-retrieval-system.git
-cd prixnc-data-retrieval-system
-```
-
-### 4. Lancer le script d'installation Windows
-
-Double-cliquez sur `install.bat` ou exécutez-le depuis l'invite de commande :
-
-```
-install.bat
-```
-
-Ce script va :
-- Vérifier l'installation de Python
-- Installer pip si nécessaire
-- Proposer de créer un environnement virtuel (recommandé)
-- Installer les dépendances requises
-- Initialiser la base de données
-
 ## Utilisation du système
 
-### Activer l'environnement virtuel (si vous en avez créé un)
+### Option 1 : Utiliser le menu interactif (méthode la plus simple)
+Double-cliquez sur `prixnc_menu.bat` et sélectionnez l'option désirée dans le menu.
 
-Avant d'utiliser le système, activez l'environnement virtuel :
+### Option 2 : Utiliser les commandes Python directement
 
+Si Python n'est pas dans votre PATH, utilisez le chemin complet :
 ```
-venv\Scripts\activate
+C:\Users\[votre_nom]\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py
 ```
 
-### Récupérer les données de produits
-
-Pour récupérer tous les produits et leurs prix :
-
+Si Python est dans votre PATH :
 ```
 python recuperer_produits.py
 ```
@@ -105,6 +81,12 @@ python prix_nc_manager.py --search "lait" --export results.csv
 
 ## Résolution des problèmes courants
 
+### Python n'est pas reconnu comme une commande
+
+Si vous recevez une erreur comme "Python n'est pas reconnu comme une commande interne ou externe", vous avez deux options :
+1. Redémarrer votre ordinateur pour que les modifications du PATH prennent effet
+2. Utiliser le chemin complet vers Python : `C:\Users\[votre_nom]\AppData\Local\Programs\Python\Python310\python.exe`
+
 ### Problème d'importation de SQLite3
 
 SQLite3 est normalement inclus avec Python. Si vous rencontrez une erreur, vérifiez :
@@ -123,7 +105,7 @@ Si vous rencontrez des erreurs lors de la récupération des données :
 
 Assurez-vous d'être dans le bon répertoire :
 ```
-cd chemin\vers\prixnc-data-retrieval-system
+cd chemin\vers\prixnc-data-retrieval-system-windows
 ```
 
 ## Notes spécifiques à Windows
@@ -145,6 +127,9 @@ R: Appuyez sur Ctrl+C dans la fenêtre du terminal.
 
 **Q: Est-ce que je peux automatiser la récupération régulière des données ?**  
 R: Oui, utilisez le Planificateur de tâches Windows pour exécuter les scripts périodiquement.
+
+**Q: Python est installé mais la commande 'python' n'est pas reconnue, que faire ?**  
+R: Soit redémarrez votre ordinateur, soit utilisez le chemin complet vers l'exécutable Python.
 
 ## Logiciels recommandés pour Windows
 
