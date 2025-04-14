@@ -10,24 +10,28 @@ echo ================================================
 echo.
 echo  1. Recuperer tous les produits
 echo  2. Recuperer 100 produits seulement (test)
-echo  3. Visualiser les statistiques
-echo  4. Rechercher des produits
-echo  5. Exporter les resultats en CSV
-echo  6. Verifier la configuration
-echo  7. Quitter
+echo  3. Recuperer UNIQUEMENT les tables annexes
+echo  4. Recuperer tables annexes PUIS produits
+echo  5. Visualiser les statistiques
+echo  6. Rechercher des produits
+echo  7. Exporter les resultats en CSV
+echo  8. Verifier la configuration
+echo  9. Quitter
 echo.
 echo ================================================
 echo.
 
-set /p choix="Votre choix (1-7): "
+set /p choix="Votre choix (1-9): "
 
 if "%choix%"=="1" goto RECUPERER_TOUS
 if "%choix%"=="2" goto RECUPERER_TEST
-if "%choix%"=="3" goto STATISTIQUES
-if "%choix%"=="4" goto RECHERCHE
-if "%choix%"=="5" goto EXPORT
-if "%choix%"=="6" goto VERIFIER
-if "%choix%"=="7" goto FIN
+if "%choix%"=="3" goto RECUPERER_ANNEXES
+if "%choix%"=="4" goto RECUPERER_ANNEXES_PRODUITS
+if "%choix%"=="5" goto STATISTIQUES
+if "%choix%"=="6" goto RECHERCHE
+if "%choix%"=="7" goto EXPORT
+if "%choix%"=="8" goto VERIFIER
+if "%choix%"=="9" goto FIN
 
 echo Choix invalide. Veuillez reessayer.
 timeout /t 2 >nul
@@ -55,6 +59,67 @@ echo      RECUPERATION DE 100 PRODUITS (TEST)
 echo ================================================
 echo.
 C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py --limit 100 --page-size 10
+pause
+goto MENU
+
+:RECUPERER_ANNEXES
+cls
+echo ================================================
+echo      RECUPERATION DES TABLES ANNEXES
+echo ================================================
+echo.
+echo Cette operation va recuperer toutes les donnees annexes:
+echo - Communes
+echo - Magasins
+echo - Secteurs de consommation
+echo - Sous-secteurs
+echo - Types de commerce
+echo - Marques
+echo - Varietes
+echo - Boucliers qualite prix
+echo.
+echo Appuyez sur CTRL+C a tout moment pour arreter.
+echo.
+pause
+cls
+echo Recuperation des tables annexes en cours...
+echo.
+C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --all-except-products
+pause
+goto MENU
+
+:RECUPERER_ANNEXES_PRODUITS
+cls
+echo ================================================
+echo    RECUPERATION DES ANNEXES PUIS DES PRODUITS
+echo ================================================
+echo.
+echo Cette operation va d'abord recuperer toutes les donnees annexes,
+echo puis tous les produits et leurs prix.
+echo.
+echo ETAPE 1: Recuperation des tables annexes
+echo ETAPE 2: Recuperation des produits et prix
+echo.
+echo Cette operation complete peut prendre plusieurs heures.
+echo Appuyez sur CTRL+C a tout moment pour arreter.
+echo.
+pause
+cls
+
+echo ETAPE 1: Recuperation des tables annexes en cours...
+echo.
+C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe prix_nc_manager.py --all-except-products
+echo.
+echo Tables annexes recuperees avec succes.
+echo.
+
+echo ETAPE 2: Recuperation des produits et prix en cours...
+echo.
+C:\Users\xavier\AppData\Local\Programs\Python\Python310\python.exe recuperer_produits.py
+echo.
+echo Produits et prix recuperes avec succes.
+echo.
+echo Recuperation complete terminee!
 pause
 goto MENU
 

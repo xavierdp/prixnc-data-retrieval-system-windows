@@ -14,11 +14,14 @@ Ce guide explique comment installer et utiliser Prix.nc Data Retrieval System su
 
 ### Méthode simple : Installateur complet
 
-L'installateur complet peut gérer tous les aspects de l'installation en une seule étape ou vous guider à travers chaque étape individuellement.
+1. Téléchargez l'installateur complet depuis le dépôt en clonant avec le protocole HTTP :
+   ```
+   git clone https://github.com/xavierdp/prixnc-data-retrieval-system-windows.git
+   ```
 
-1. Double-cliquez sur `installer_complet.bat`
-2. Sélectionnez "7. Installer tout automatiquement" pour une installation complète en une étape
-3. Ou naviguez dans le menu pour installer les composants individuellement
+2. Double-cliquez sur `installer_complet.bat`
+3. Sélectionnez "7. Installer tout automatiquement" pour une installation complète en une étape
+4. Ou naviguez dans le menu pour installer les composants individuellement
 
 L'installateur s'occupera de :
 - Installer Python via winget (si nécessaire)
@@ -60,7 +63,7 @@ python recuperer_produits.py
 Options disponibles :
 - `--limit` ou `-l` : Limite le nombre de produits à récupérer
 - `--page-size` ou `-p` : Nombre d'éléments par page (défaut: 10)
-- `--reset` : Réinitialise les tables produits et prix avant récupération
+- `--reset` : Réinitialises les tables produits et prix avant récupération
 
 ### Visualiser les statistiques en temps réel
 
