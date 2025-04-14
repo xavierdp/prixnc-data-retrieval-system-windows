@@ -1,0 +1,32 @@
+# Base de données
+*.db
+*.db-journal
+
+# Environnement Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pyenv/
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Fichiers de log
+*.log
+
+# Fichiers d'export CSV
+*.csv
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers d'éditeurs
+.idea/
+.vscode/
+*.swp
+*.swo
